@@ -1,5 +1,14 @@
-# graphql-contract
+<div align="center">
+  <img src="docs/assets/logo.svg" alt="graphql-contract — Consumer-driven contract testing for GraphQL APIs — no Pact Broker required" width="720">
+</div>
 
+<p align="center"><strong>Consumer-driven contract testing for GraphQL APIs — no Pact Broker required</strong></p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/graphql-contract"><img src="https://img.shields.io/npm/v/graphql-contract?label=npm" alt="npm"></a>
+</p>
+
+---
 Consumer-driven contract testing for GraphQL APIs using field selection sets. Frontend teams declare which fields they consume; backend CI fails if those fields change incompatibly. No Pact Broker server required — contracts are simple JSON files stored alongside your code.
 
 ## Installation
