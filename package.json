@@ -12,9 +12,15 @@
     "graphql": ">=16.0.0"
   },
   "devDependencies": {
+    "@types/node": "^22.20.1",
     "graphql": "^16.9.0",
     "typescript": "^5.0.0"
   },
-  "keywords": ["graphql", "contract", "testing", "consumer-driven"],
+  "keywords": [
+    "graphql",
+    "contract",
+    "testing",
+    "consumer-driven"
+  ],
   "license": "MIT"
 }
