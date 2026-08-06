@@ -5,6 +5,7 @@
 <p align="center"><strong>Consumer-driven contract testing for GraphQL APIs — no Pact Broker required</strong></p>
 
 <p align="center">
+  <a href="https://github.com/mstuart/graphql-contract/actions/workflows/ci.yml"><img src="https://github.com/mstuart/graphql-contract/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://www.npmjs.com/package/graphql-contract"><img src="https://img.shields.io/npm/v/graphql-contract?label=npm" alt="npm"></a>
 </p>
 
