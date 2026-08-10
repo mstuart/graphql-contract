@@ -1,7 +1,7 @@
-import { describe, it } from 'node:test';
-import assert from 'node:assert/strict';
-import { buildSchema } from 'graphql';
-import { checkOperationCompatibility } from '../src/matchers';
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { buildSchema } from "graphql";
+import { checkOperationCompatibility } from "../src/matchers";
 
 const SCHEMA = buildSchema(`
   type Query {
@@ -23,40 +23,43 @@ const SCHEMA = buildSchema(`
   }
 `);
 
-describe('checkOperationCompatibility', () => {
-  it('returns no violations for valid operation', () => {
+describe("checkOperationCompatibility", () => {
+  it("returns no violations for valid operation", () => {
     const violations = checkOperationCompatibility(
       'query GetUser { user(id: "1") { id email name } }',
-      SCHEMA,
+      SCHEMA
     );
     assert.equal(violations.length, 0);
   });
 
-  it('detects field that does not exist', () => {
+  it("detects field that does not exist", () => {
     const violations = checkOperationCompatibility(
       'query GetUser { user(id: "1") { id email avatar } }',
-      SCHEMA,
+      SCHEMA
     );
     assert.ok(violations.length > 0);
-    assert.ok(violations.some((v) => v.reason.includes('avatar')));
+    assert.ok(violations.some((v) => v.reason.includes("avatar")));
   });
 
-  it('detects nested field that does not exist', () => {
+  it("detects nested field that does not exist", () => {
     const violations = checkOperationCompatibility(
       'query GetUser { user(id: "1") { id posts { id title category } } }',
-      SCHEMA,
+      SCHEMA
     );
     assert.ok(violations.length > 0);
-    assert.ok(violations.some((v) => v.reason.includes('category')));
+    assert.ok(violations.some((v) => v.reason.includes("category")));
   });
 
-  it('returns violation for unparseable operation', () => {
-    const violations = checkOperationCompatibility('not valid graphql {{{', SCHEMA);
+  it("returns violation for unparseable operation", () => {
+    const violations = checkOperationCompatibility(
+      "not valid graphql {{{",
+      SCHEMA
+    );
     assert.ok(violations.length > 0);
-    assert.ok(violations.some((v) => v.reason.includes('Failed to parse')));
+    assert.ok(violations.some((v) => v.reason.includes("Failed to parse")));
   });
 
-  it('detects removed argument', () => {
+  it("detects removed argument", () => {
     const noArgSchema = buildSchema(`
       type Query {
         user: User!
@@ -70,15 +73,15 @@ describe('checkOperationCompatibility', () => {
 
     const violations = checkOperationCompatibility(
       'query GetUser { user(id: "1") { id email } }',
-      noArgSchema,
+      noArgSchema
     );
     assert.ok(violations.length > 0);
   });
 
-  it('handles valid deeply nested queries', () => {
+  it("handles valid deeply nested queries", () => {
     const violations = checkOperationCompatibility(
       'query GetUser { user(id: "1") { id posts { id title body } } }',
-      SCHEMA,
+      SCHEMA
     );
     assert.equal(violations.length, 0);
   });
