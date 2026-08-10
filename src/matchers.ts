@@ -1,24 +1,20 @@
 import {
+  type DocumentNode,
+  type FieldNode,
+  type GraphQLSchema,
   parse,
-  validate,
   TypeInfo,
+  validate,
   visit,
   visitWithTypeInfo,
-  GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLNonNull,
-  isObjectType,
-  isNonNullType,
-  getNamedType,
-  DocumentNode,
-  FieldNode,
-  OperationDefinitionNode,
-} from 'graphql';
-import { ContractViolation } from './types';
+} from "graphql";
+import type { ContractViolation } from "./types";
+
+const UNKNOWN_FIELD_PATTERN = /Cannot query field "([^"]+)" on type "([^"]+)"/;
 
 export function checkOperationCompatibility(
   operation: string,
-  schema: GraphQLSchema,
+  schema: GraphQLSchema
 ): ContractViolation[] {
   const violations: ContractViolation[] = [];
 
@@ -27,7 +23,7 @@ export function checkOperationCompatibility(
     doc = parse(operation);
   } catch (err) {
     violations.push({
-      field: '',
+      field: "",
       operation,
       reason: `Failed to parse operation: ${(err as Error).message}`,
     });
@@ -59,7 +55,7 @@ export function checkOperationCompatibility(
           const parentType = typeInfo.getParentType();
           const fieldDef = typeInfo.getFieldDef();
 
-          if (!parentType || !fieldDef) {
+          if (!(parentType && fieldDef)) {
             // Field doesn't exist — already caught by validate()
             return;
           }
@@ -80,7 +76,7 @@ export function checkOperationCompatibility(
           }
         },
       },
-    }),
+    })
   );
 
   return violations;
@@ -89,9 +85,9 @@ export function checkOperationCompatibility(
 function extractFieldFromError(message: string): string {
   // graphql validation errors typically say:
   // Cannot query field "x" on type "Y"
-  const match = message.match(/Cannot query field "([^"]+)" on type "([^"]+)"/);
+  const match = message.match(UNKNOWN_FIELD_PATTERN);
   if (match) {
     return `${match[2]}.${match[1]}`;
   }
-  return '';
+  return "";
 }

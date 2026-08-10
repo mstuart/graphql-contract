@@ -2,25 +2,29 @@
   "name": "graphql-contract",
   "version": "0.1.0",
   "description": "Consumer-driven contract testing for GraphQL APIs — no broker required",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc",
-    "test": "npx --yes tsx --test tests/consumer.test.ts tests/provider.test.ts tests/matchers.test.ts"
-  },
-  "peerDependencies": {
-    "graphql": ">=16.0.0"
-  },
-  "devDependencies": {
-    "@types/node": "^22.20.1",
-    "graphql": "^16.9.0",
-    "typescript": "^5.0.0"
-  },
   "keywords": [
     "graphql",
     "contract",
     "testing",
     "consumer-driven"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "check": "ultracite check",
+    "fix": "ultracite fix",
+    "test": "npx --yes tsx --test tests/consumer.test.ts tests/provider.test.ts tests/matchers.test.ts"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.6",
+    "@types/node": "^22.20.1",
+    "graphql": "^16.9.0",
+    "typescript": "^5.0.0",
+    "ultracite": "7.10.2"
+  },
+  "peerDependencies": {
+    "graphql": ">=16.0.0"
+  }
 }
