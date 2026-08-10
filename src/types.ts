@@ -1,8 +1,8 @@
 export interface GraphQLContract {
   consumer: string;
-  provider: string;
-  operations: string[];
   createdAt: string;
+  operations: string[];
+  provider: string;
 }
 
 export interface ContractViolation {
@@ -13,8 +13,8 @@ export interface ContractViolation {
 
 export interface DefineContractOptions {
   consumer: string;
-  provider: string;
   operations: string[];
+  provider: string;
 }
 
 export interface PublishContractOptions {
@@ -22,8 +22,8 @@ export interface PublishContractOptions {
 }
 
 export interface VerifyContractsOptions {
-  schema: import('graphql').GraphQLSchema;
   contractsPath: string;
+  schema: import("graphql").GraphQLSchema;
 }
 
 export interface VerifyContractsResult {
