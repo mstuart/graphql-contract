@@ -6,7 +6,9 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "npx --yes tsx --test tests/consumer.test.ts tests/provider.test.ts tests/matchers.test.ts"
+    "test": "npx --yes tsx --test tests/consumer.test.ts tests/provider.test.ts tests/matchers.test.ts",
+    "check": "ultracite check",
+    "fix": "ultracite fix"
   },
   "peerDependencies": {
     "graphql": ">=16.0.0"
@@ -14,7 +16,9 @@
   "devDependencies": {
     "@types/node": "^22.20.1",
     "graphql": "^16.9.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "@biomejs/biome": "2.5.6",
+    "ultracite": "7.10.2"
   },
   "keywords": [
     "graphql",
