@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdir, rm } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
@@ -181,4 +181,19 @@ describe("verifyContracts", () => {
     assert.equal(result.passed, false);
     assert.ok(result.violations.length > 0);
   });
+});
+
+it("reports null and empty-operation contract documents as violations", async (t) => {
+  const dir = await mkdtemp(join(tmpdir(), "contract-invalid-"));
+  t.after(() => rm(dir, { force: true, recursive: true }));
+  await Promise.all([
+    writeFile(join(dir, "null.json"), "null"),
+    writeFile(join(dir, "empty.json"), JSON.stringify({ operations: [] })),
+  ]);
+  const result = await verifyContracts({
+    contractsPath: dir,
+    schema: FULL_SCHEMA,
+  });
+  assert.equal(result.passed, false);
+  assert.equal(result.violations.length, 2);
 });

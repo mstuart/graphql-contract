@@ -39,7 +39,7 @@ export function defineContract(opts: DefineContractOptions): GraphQLContract {
   return {
     consumer: opts.consumer,
     createdAt: new Date().toISOString(),
-    operations: opts.operations,
+    operations: [...opts.operations],
     provider: opts.provider,
   };
 }
