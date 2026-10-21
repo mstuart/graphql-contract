@@ -109,3 +109,15 @@ describe("publishContract", () => {
     assert.ok(parsed.createdAt);
   });
 });
+
+it("snapshots validated operation arrays instead of retaining caller state", () => {
+  const operations = ["query { user { id } }"];
+  const contract = defineContract({
+    consumer: "app",
+    operations,
+    provider: "api",
+  });
+  operations[0] = "not GraphQL";
+  operations.push("query { removed }");
+  assert.deepEqual(contract.operations, ["query { user { id } }"]);
+});

@@ -41,7 +41,7 @@ export async function verifyContracts(
       const filePath = join(contractsPath, file);
       const raw = await readFile(filePath, "utf-8");
 
-      let contract: Partial<GraphQLContract>;
+      let contract: Partial<GraphQLContract> | null;
       try {
         contract = JSON.parse(raw) as Partial<GraphQLContract>;
       } catch {
@@ -53,11 +53,14 @@ export async function verifyContracts(
         return fileViolations;
       }
 
-      if (!Array.isArray(contract.operations)) {
+      if (
+        !Array.isArray(contract?.operations) ||
+        contract.operations.length === 0
+      ) {
         fileViolations.push({
           field: "",
           operation: "",
-          reason: `Contract file "${file}" has no operations array`,
+          reason: `Contract file "${file}" has no non-empty operations array`,
         });
         return fileViolations;
       }
