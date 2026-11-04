@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
-import { parse } from "graphql";
+import { Kind, parse } from "graphql";
 import type {
   DefineContractOptions,
   GraphQLContract,
@@ -27,7 +27,19 @@ export function defineContract(opts: DefineContractOptions): GraphQLContract {
   // Validate each operation is syntactically valid GraphQL
   for (const op of opts.operations) {
     try {
-      parse(op);
+      const document = parse(op);
+      if (
+        !document.definitions.some(
+          (definition) => definition.kind === Kind.OPERATION_DEFINITION
+        ) ||
+        document.definitions.some(
+          (definition) =>
+            definition.kind !== Kind.OPERATION_DEFINITION &&
+            definition.kind !== Kind.FRAGMENT_DEFINITION
+        )
+      ) {
+        throw new Error("Expected an executable GraphQL operation document");
+      }
     } catch (err) {
       throw createErrorWithCause(
         `Invalid GraphQL operation: ${(err as Error).message}\nOperation: ${op}`,
