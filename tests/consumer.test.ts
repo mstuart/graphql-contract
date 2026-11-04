@@ -121,3 +121,30 @@ it("snapshots validated operation arrays instead of retaining caller state", () 
   operations.push("query { removed }");
   assert.deepEqual(contract.operations, ["query { user { id } }"]);
 });
+
+it("rejects documents without executable operations or containing SDL", () => {
+  for (const operation of [
+    "type Query { value: Int }",
+    "fragment Fields on User { id }",
+    "query { __typename } type Extra { id: ID }",
+  ]) {
+    assert.throws(
+      () =>
+        defineContract({
+          consumer: "app",
+          operations: [operation],
+          provider: "api",
+        }),
+      INVALID_OPERATION_PATTERN
+    );
+  }
+  assert.doesNotThrow(() =>
+    defineContract({
+      consumer: "app",
+      operations: [
+        "query { user { ...Fields } } fragment Fields on User { id }",
+      ],
+      provider: "api",
+    })
+  );
+});
